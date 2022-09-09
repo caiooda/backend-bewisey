@@ -1,0 +1,49 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id                      Int       @id @default(autoincrement())
+  nome                    String
+  email                   String    @unique
+  senha                   String
+  professor               Boolean
+  aluno                   Boolean
+  aulasAssistidas         Int
+  status                  Boolean   @default(true)
+  dataDeCadastro          DateTime  @default(now())
+  dataDaUltimaAtualizacao DateTime  @updatedAt
+  Aula                    Aula[]
+  Materia                 Materia[]
+
+  @@map("tb_Usuario")
+}
+
+model Aula {
+  id             Int      @id @default(autoincrement())
+  horarioInicio  String
+  materiaId      Int
+  professorId    Int
+  alunoId        Int
+  horarioTermino String
+  dataDeCadastro DateTime @default(now())
+  Usuario        Usuario  @relation(fields: [professorId], references: [id])
+  Materia        Materia  @relation(fields: [materiaId], references: [id])
+
+  @@map("tb_Aula")
+}
+
+model Materia {
+  id        Int       @id @default(autoincrement())
+  descricao String    @db.NVarChar(150)
+  Usuario   Usuario[]
+  Aula      Aula[]
+
+  @@map("tb_Materia")
+}
