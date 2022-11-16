@@ -1,14 +1,20 @@
 import jwt from "jsonwebtoken";
-import Token from "../../../domain/entities/Token";
-import Usuario from "../../../domain/entities/Usuario";
 
 export const secretToken = String(process.env.CHAVE_SECRETA);
 
 export class ObterTokenUseCase {
-  async obterToken(data: Usuario): Promise<string> {
+  async obterToken(data: any): Promise<string> {
     return jwt.sign(
       {
         usuarioId: data.id,
+        nome: data.nome,
+        professor: data.professor,
+        aluno: data.aluno,
+        aulasAssistidas: data.aulasAssistidas,
+        cidadeId: data.cidadeId,
+        nomeDaCidade: data.Cidade.nome,
+        dataDeCadastro: data.dataDeCadastro,
+        dataDaUltimaAtualizacao: data.dataDaUltimaAtualizacao,
       },
       secretToken,
       {
@@ -17,11 +23,20 @@ export class ObterTokenUseCase {
     );
   }
 
-  async execute(data: Usuario): Promise<Token> {
-    const token = await this.obterToken(data);
-    return {
+  async execute(data: any): Promise<any> {
+    const tokenService = await this.obterToken(data);
+    const bearerToken = {
       usuarioId: data.id,
-      token: token,
+      nome: data.nome,
+      professor: data.professor,
+      aluno: data.aluno,
+      aulasAssistidas: data.aulasAssistidas,
+      cidadeId: data.cidadeId,
+      nomeDaCidade: data.Cidade.nome,
+      dataDeCadastro: data.dataDeCadastro,
+      dataDaUltimaAtualizacao: data.dataDaUltimaAtualizacao,
+      token: tokenService,
     };
+    return bearerToken;
   }
 }

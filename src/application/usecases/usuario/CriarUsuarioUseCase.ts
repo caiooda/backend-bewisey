@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import Usuario from "../../../domain/entities/Usuario";
 import RepositoryFactory from "../../../domain/factories/RepositoryFactory";
 import UsuarioRepository from "../../../domain/repositories/UsuarioRepository";
@@ -19,15 +18,13 @@ export default class CriarUsuarioUseCase {
         400
       );
     }
-    const senha = bcrypt.hashSync(data.senha, 10);
+    const enconded = Buffer.from(data.senha).toString("base64");
     await this.repository.criar(
       data.email,
-      senha,
+      enconded,
       data.nome,
       data.professor,
-      data.aluno,
-      data.aulasAssistidas,
-      data.status
+      data.aluno
     );
   }
 }

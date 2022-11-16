@@ -1,28 +1,14 @@
-import Usuario from "../entities/Usuario";
-
 export default interface UsuarioRepository {
-  obterTodos(): Promise<Usuario[] | null>;
-  obterProfessores(): Promise<Usuario[] | null>;
-  obterAlunos(): Promise<Usuario[] | null>;
-  obterPeloId(id: number): Promise<Usuario | null>;
-  obterPeloEmail(email: string): Promise<Usuario | null>;
   criar(
     email: string,
     senha: string,
     nome: string,
     professor: boolean,
-    aluno: boolean,
-    aulasAssistidas: number,
-    status: boolean
+    aluno: boolean
   ): Promise<void>;
-  atualizar(
-    id: number,
-    email: string,
-    senha: string,
-    nome: string,
-    professor: boolean,
-    aluno: boolean,
-    aulasAssistidas: number,
-    status: boolean
-  ): Promise<void>;
+  redefinirSenha(id: number, senha: string): Promise<void>;
+  dadosUsuario(id: number): Promise<any>;
+  obterPeloEmail(email: string): Promise<any>;
+  obterTodosProfessores(): Promise<any>;
+  obterTodosProfessoresPorMateria(id: number): Promise<any>;
 }

@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import Usuario from "../../../domain/entities/Usuario";
 import RepositoryFactory from "../../../domain/factories/RepositoryFactory";
 import UsuarioRepository from "../../../domain/repositories/UsuarioRepository";
@@ -34,8 +33,8 @@ export default class LoginUseCase {
         400
       );
     } else {
-      const senha = await bcrypt.compare(data.senha, usuario.senha);
-      if (!senha) {
+      const encoded = Buffer.from(data.senha).toString("base64");
+      if (encoded != usuario.senha) {
         ErroUseCase(
           [
             {

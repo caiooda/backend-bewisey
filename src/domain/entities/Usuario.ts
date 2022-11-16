@@ -9,6 +9,6 @@ export default class Usuario {
     readonly aulasAssistidas: number,
     readonly status: boolean,
     readonly dataDeCadastro?: Date,
-    readonly dataDaUltimaAtualizacao?: Date,
+    readonly dataDaUltimaAtualizacao?: Date
   ) {}
 }
