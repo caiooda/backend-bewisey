@@ -13,8 +13,8 @@ model Administrador {
   nome                    String
   email                   String   @unique
   senha                   String
-  status                  Boolean  @default(true)
-  dataDeCadastro          DateTime @default(now())
+  status                  Boolean  @default(true, map: "tb_Administrador_status_df")
+  dataDeCadastro          DateTime @default(now(), map: "tb_Administrador_dataDeCadastro_df")
   dataDaUltimaAtualizacao DateTime @updatedAt
 
   @@map("tb_Administrador")
@@ -29,12 +29,12 @@ model Usuario {
   aluno                   Boolean
   aulasAssistidas         Int
   cidadeId                Int?
-  status                  Boolean   @default(true)
-  dataDeCadastro          DateTime  @default(now())
+  status                  Boolean   @default(true, map: "tb_Usuario_status_df")
+  dataDeCadastro          DateTime  @default(now(), map: "tb_Usuario_dataDeCadastro_df")
   dataDaUltimaAtualizacao DateTime  @updatedAt
-  Materia                 Materia[]
-  Aula                    Aula[]
   Cidade                  Cidade?   @relation(fields: [cidadeId], references: [id])
+  Aula                    Aula[]
+  Materia                 Materia[]
 
   @@map("tb_Usuario")
 }
@@ -46,13 +46,14 @@ model Aula {
   materiaId      Int
   plataformaId   Int
   tipoDeAulaId   Int
-  alunoId        Int
-  avaliacao      Int        @default(5)
-  dataDeCadastro DateTime   @default(now())
-  Usuario        Usuario[]
+  avaliacao      Int        @default(5, map: "tb_Aula_avaliacao_df")
+  dataDeCadastro DateTime   @default(now(), map: "tb_Aula_dataDeCadastro_df")
+  dataDaAula     DateTime
+  particular     Boolean    @default(true, map: "tb_Aula_particular_df")
+  Materia        Materia    @relation(fields: [materiaId], references: [id])
   Plataforma     Plataforma @relation(fields: [plataformaId], references: [id])
   TipoDeAula     TipoDeAula @relation(fields: [tipoDeAulaId], references: [id])
-  Materia        Materia    @relation(fields: [materiaId], references: [id])
+  Usuario        Usuario[]
 
   @@map("tb_Aula")
 }
@@ -60,17 +61,16 @@ model Aula {
 model Materia {
   id        Int       @id @default(autoincrement())
   descricao String    @db.NVarChar(150)
-  Usuario   Usuario[]
   Aula      Aula[]
+  Usuario   Usuario[]
 
   @@map("tb_Materia")
 }
 
 model TipoDeAula {
-  id         Int     @id @default(autoincrement())
-  descricao  String  @db.NVarChar(150)
-  particular Boolean @default(false)
-  Aula       Aula[]
+  id        Int    @id @default(autoincrement())
+  descricao String @db.NVarChar(150)
+  Aula      Aula[]
 
   @@map("tb_TipoDeAula")
 }

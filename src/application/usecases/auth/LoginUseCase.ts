@@ -1,4 +1,3 @@
-import Usuario from "../../../domain/entities/Usuario";
 import RepositoryFactory from "../../../domain/factories/RepositoryFactory";
 import UsuarioRepository from "../../../domain/repositories/UsuarioRepository";
 import { ErroUseCase } from "../error/ErroUseCase";
@@ -11,7 +10,7 @@ export default class LoginUseCase {
     this.repository = repositoryFactory.criarUsuarioRepository();
   }
 
-  async execute(data: Usuario): Promise<any> {
+  async execute(data: any): Promise<any> {
     if (!data) {
       ErroUseCase(
         [
