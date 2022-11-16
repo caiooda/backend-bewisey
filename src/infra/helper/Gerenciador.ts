@@ -1,7 +1,7 @@
 import { Request } from "express";
 import jwt from "jsonwebtoken";
 
-export async function obterCliente(request: any): Promise<number> {
+export async function obterUsuario(request: any): Promise<number> {
   try {
     const authorization = request.headers.authorization;
     const chaveDeAcesso = authorization.split(" ")[1];
@@ -10,22 +10,7 @@ export async function obterCliente(request: any): Promise<number> {
     jwt.verify(chaveDeAcesso, chaveSecreta, function (error: any, result: any) {
       payload.push(result);
     });
-    return payload[0].$id;
-  } catch (erro: any) {
-    throw erro;
-  }
-}
-
-export async function obterUsuario(request: any): Promise<string> {
-  try {
-    const authorization = request.headers.authorization;
-    const chaveDeAcesso = authorization.split(" ")[1];
-    const chaveSecreta = String(process.env.CHAVE_SECRETA);
-    const payload: any = [];
-    jwt.verify(chaveDeAcesso, chaveSecreta, function (error: any, result: any) {
-      payload.push(result);
-    });
-    return payload[0].$userId;
+    return payload[0].usuarioId;
   } catch (erro: any) {
     throw erro;
   }
